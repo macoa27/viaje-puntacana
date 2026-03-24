@@ -55,6 +55,7 @@
         .box { background: rgba(255,255,255,0.08); padding: 18px; border-radius: 22px; border: 1px solid rgba(255,255,255,0.05); }
         .num { font-size: 2.2rem; font-weight: 800; display: block; font-variant-numeric: tabular-nums; }
         .unit { font-size: 0.6rem; color: var(--blue); text-transform: uppercase; font-weight: 700; }
+        
         .comments-section { width: 100%; max-width: 600px; margin: 0 auto; padding: 60px 15px; text-align: center; }
         .muro-card {
             background: rgba(255, 255, 255, 0.05); padding: 30px 20px; border-radius: 30px;
@@ -72,10 +73,6 @@
 </head>
 <body>
     <div class="bg-fixed"></div>
-
-    <audio id="clickSound" preload="auto">
-        <source src="https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3" type="audio/mpeg">
-    </audio>
 
     <div class="weather-bar">
         <span>☀️ PUJ: <strong>30°C</strong></span>
@@ -129,28 +126,42 @@
         document.getElementById('contador-votos').innerText = votos;
 
         function manejarClick() {
-            // Haptics
-            if (window.navigator && window.navigator.vibrate) { window.navigator.vibrate(50); }
-            
-            // Sonido
-            const sound = document.getElementById('clickSound');
-            if (sound) { sound.currentTime = 0; sound.play().catch(e => {}); }
+            // 1. VIBRACIÓN (Android)
+            if (navigator.vibrate) { navigator.vibrate(50); }
 
-            // Métrica de Google
-            gtag('event', 'click_manija', { 'event_category': 'Interacción', 'event_label': 'Botón Manija' });
+            // 2. AUDIO SINTÉTICO (Para que no falle el MP3 externo)
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioCtx.createOscillator();
+                const gainNode = audioCtx.createGain();
+                oscillator.type = 'sine';
+                oscillator.frequency.setValueAtTime(600, audioCtx.currentTime);
+                oscillator.frequency.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+                gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+                oscillator.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+                oscillator.start();
+                oscillator.stop(audioCtx.currentTime + 0.1);
+            } catch (e) {}
 
-            // Contador
+            // 3. GOOGLE ANALYTICS
+            if (typeof gtag === 'function') {
+                gtag('event', 'click_manija', { 'event_category': 'Interacción', 'event_label': 'Botón Manija' });
+            }
+
+            // 4. LÓGICA
             votos++;
             localStorage.setItem('votosManija', votos);
             document.getElementById('contador-votos').innerText = votos;
             
-            // Confeti
+            // 5. CONFETI
             confetti({ particleCount: 150, spread: 70, origin: { y: 0.7 } });
         }
 
         var disqus_config = function () {
             this.page.url = "https://macoa27.github.io/viaje-puntacana/";
-            this.page.identifier = "puj-locreros-v-final-analytics";
+            this.page.identifier = "puj-locreros-v-final-full-logic";
             this.page.reactions = { enabled: false };
         };
         (function() {
