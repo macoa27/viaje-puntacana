@@ -8,27 +8,17 @@
     <style>
         :root { --blue: #0A84FF; --bg: #000; --card: rgba(28, 28, 30, 0.9); }
         body, html { margin: 0; font-family: -apple-system, system-ui, sans-serif; background: var(--bg); color: #fff; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; scroll-behavior: smooth; }
-        
         .bg { background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.8)), url('foto-grupo.jpg'); background-position: center; background-size: cover; background-attachment: fixed; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; }
         
-        .weather-bar { position: fixed; top: 20px; font-size: 0.75rem; background: rgba(0,0,0,0.7); padding: 10px 20px; border-radius: 25px; backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; gap: 12px; z-index: 100; }
+        /* BARRA REPARADA */
+        .weather-bar { position: fixed; top: 20px; font-size: 0.7rem; background: rgba(0,0,0,0.7); padding: 10px 15px; border-radius: 25px; backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; gap: 8px; z-index: 100; white-space: nowrap; }
         
         .hero-section { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; text-align: center; padding-top: 60px; }
-        
-        /* UI MEJORADA DEL BOTÓN/CONTENEDOR */
-        .container { 
-            width: 85%; max-width: 380px; padding: 35px 20px; 
-            background: var(--card); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); 
-            border-radius: 35px; border: 1px solid rgba(255,255,255,0.2); 
-            box-shadow: 0 0 30px rgba(10, 132, 255, 0.2);
-            cursor: pointer; transition: all 0.2s ease;
-            position: relative; z-index: 10;
-        }
-        .container:hover { transform: translateY(-5px); border-color: var(--blue); box-shadow: 0 0 40px rgba(10, 132, 255, 0.4); }
+        .container { width: 85%; max-width: 380px; padding: 35px 20px; background: var(--card); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border-radius: 35px; border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 0 30px rgba(10, 132, 255, 0.2); cursor: pointer; transition: all 0.2s ease; position: relative; z-index: 10; }
+        .container:hover { transform: translateY(-5px); border-color: var(--blue); }
         .container:active { transform: scale(0.95); }
-
-        .btn-manija { margin-top: 20px; background: var(--blue); color: white; padding: 12px; border-radius: 15px; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; display: inline-block; width: 80%; }
-
+        .btn-manija { margin-top: 20px; background: var(--blue); color: white; padding: 15px; border-radius: 18px; font-size: 0.9rem; font-weight: 900; text-transform: uppercase; display: inline-block; width: 85%; box-shadow: 0 4px 15px rgba(10, 132, 255, 0.4); }
+        .click-counter { margin-top: 12px; font-size: 0.65rem; color: #8E8E93; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; }
         .group-name { font-size: 0.8rem; color: var(--blue); font-weight: 800; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 10px; }
         .puj { font-size: 5.5rem; font-weight: 900; letter-spacing: -4px; margin: 0; line-height: 0.9; }
         .dest { color: #fff; font-weight: 700; margin-bottom: 30px; font-size: 1.2rem; opacity: 0.9; }
@@ -36,13 +26,8 @@
         .box { background: rgba(255,255,255,0.1); padding: 18px; border-radius: 22px; }
         .num { font-size: 2.2rem; font-weight: 800; display: block; }
         .unit { font-size: 0.6rem; color: var(--blue); text-transform: uppercase; font-weight: 700; }
-        
         .comments-section { width: 90%; max-width: 600px; padding: 80px 0; text-align: center; z-index: 10; }
-        .challenge-text { font-size: 2.2rem; font-weight: 900; margin-bottom: 15px; text-transform: uppercase; font-style: italic; }
         .comment-box { background: #fff; border-radius: 30px; padding: 20px; min-height: 400px; margin-top: 20px; }
-        
-        .scroll-hint { margin-top: 30px; font-size: 0.7rem; color: #8E8E93; text-transform: uppercase; letter-spacing: 2px; animation: bounce 2s infinite; cursor: pointer; }
-        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-10px);} }
     </style>
 </head>
 <body>
@@ -52,10 +37,12 @@
         <span>☀️ PUJ: <strong>30°C</strong></span>
         <span style="opacity: 0.3;">|</span>
         <span>🍺 <strong>∞ Lisos</strong></span>
+        <span style="opacity: 0.3;">|</span>
+        <span>❄️ Sed: <strong>Extrema</strong></span>
     </div>
 
     <div class="hero-section">
-        <div class="container" onclick="tirarConfeti()">
+        <div class="container" onclick="manejarClick()">
             <div class="group-name">Locreros del Sur</div>
             <div class="puj">PUJ</div>
             <div class="dest">Punta Cana • 24 de Abril</div>
@@ -65,24 +52,19 @@
                 <div class="box"><span class="num" id="m">00</span><span class="unit">Minutos</span></div>
                 <div class="box"><span class="num" id="s">00</span><span class="unit">Segundos</span></div>
             </div>
-            <div class="btn-manija">SOLTAR MANIJA 🌴</div>
+            <div class="btn-manija">¡ESTOY RE MANIJA! 🌴</div>
+            <div class="click-counter">MI NIVEL DE MANIJA: <span id="contador-votos" style="color:var(--blue)">0</span></div>
         </div>
-        <div class="scroll-hint" onclick="document.getElementById('muro').scrollIntoView()">¿Arrugás o arriesgás? ↓</div>
+        <div style="margin-top: 30px; font-size: 0.7rem; color: #8E8E93; text-transform: uppercase; cursor: pointer;" onclick="document.getElementById('muro').scrollIntoView()">Deslizá para el bardeo ↓</div>
     </div>
 
     <div id="muro" class="comments-section">
-        <div class="challenge-text">¿Y VOS QUÉ VAS A HACER?</div>
-        <div style="color:#ccc; margin-bottom:30px;">
-            El que no firme o no arriesgue predicción será el <strong>MOZO OFICIAL</strong>. <br>¡Firmá o serví! 👇
-        </div>
-        
-        <div class="comment-box">
-            <div id="disqus_thread"></div>
-        </div>
+        <h2 style="font-style: italic; font-weight: 900; font-size: 2.2rem;">¿Y VOS QUÉ VAS A HACER?</h2>
+        <p>El que no firme o no arriesgue predicción será el <strong>MOZO OFICIAL</strong>. <br>¡Firmá o serví! 👇</p>
+        <div class="comment-box"><div id="disqus_thread"></div></div>
     </div>
 
     <script>
-        // COUNTDOWN
         const target = new Date("April 24, 2026 00:00:00").getTime();
         setInterval(() => {
             const diff = target - new Date().getTime();
@@ -91,24 +73,3 @@
             document.getElementById("m").innerText = Math.floor((diff % (1000*60*60)) / (1000*60));
             document.getElementById("s").innerText = Math.floor((diff % (1000*60)) / 1000);
         }, 1000);
-
-        // CONFETTI
-        function tirarConfeti() {
-            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
-        }
-
-        // DISQUS (Corregido el Shortname)
-        var disqus_config = function () {
-            this.page.url = window.location.href.split('?')[0]; 
-            this.page.identifier = 'viaje-puj-locreros-final';
-        };
-        (function() {
-            var d = document, s = d.createElement('script');
-            // IMPORTANTE: Mantenemos el shortname que creaste
-            s.src = 'https://https-macoa27-github-io-viaje-puntacana.disqus.com/embed.js';
-            s.setAttribute('data-timestamp', +new Date());
-            (d.head || d.body).appendChild(s);
-        })();
-    </script>
-</body>
-</html>
