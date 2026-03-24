@@ -1,109 +1,11 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Locreros del Sur | PUJ 2026</title>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <style>
-        :root { --blue: #0A84FF; --bg: #000; --card: rgba(28, 28, 30, 0.95); }
-        body, html { margin: 0; font-family: -apple-system, system-ui, sans-serif; background: var(--bg); color: #fff; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; scroll-behavior: smooth; }
-        .bg { background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.85)), url('foto-grupo.jpg'); background-position: center; background-size: cover; background-attachment: fixed; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; }
-        
-        .weather-bar { position: fixed; top: 15px; font-size: 0.7rem; background: rgba(0,0,0,0.8); padding: 10px 15px; border-radius: 25px; backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.15); display: flex; align-items: center; gap: 10px; z-index: 1000; white-space: nowrap; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
-        
-        .hero-section { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; text-align: center; padding-top: 80px; }
-        
-        .container { width: 85%; max-width: 380px; padding: 35px 20px; background: var(--card); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border-radius: 35px; border: 1px solid rgba(255,255,255,0.2); cursor: pointer; transition: all 0.2s ease; position: relative; z-index: 10; }
-        .container:active { transform: scale(0.96); }
-
-        .btn-manija { margin-top: 20px; background: var(--blue); color: white; padding: 15px; border-radius: 18px; font-size: 1rem; font-weight: 900; text-transform: uppercase; display: inline-block; width: 85%; box-shadow: 0 4px 15px rgba(10, 132, 255, 0.4); }
-        .click-counter { margin-top: 12px; font-size: 0.65rem; color: #8E8E93; font-weight: 700; letter-spacing: 1px; }
-
-        .puj { font-size: 5.5rem; font-weight: 900; letter-spacing: -4px; margin: 0; line-height: 0.9; }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
-        .box { background: rgba(255,255,255,0.08); padding: 15px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); }
-        .num { font-size: 2rem; font-weight: 800; display: block; }
-        .unit { font-size: 0.6rem; color: var(--blue); text-transform: uppercase; }
-
-        .comments-section { width: 100%; max-width: 600px; padding: 60px 15px; text-align: center; box-sizing: border-box; }
-        .comment-box { background: #fff; border-radius: 25px; padding: 15px; min-height: 500px; margin-top: 20px; overflow: hidden; color: #000; }
-    </style>
-</head>
-<body>
-    <div class="bg"></div>
-
-    <div class="weather-bar">
-        <span>☀️ PUJ: <strong>30°C</strong></span>
-        <span style="opacity: 0.3;">|</span>
-        <span>🍺 <strong>∞ Lisos</strong></span>
-        <span style="opacity: 0.3;">|</span>
-        <span>❄️ Sed: <strong>Extrema</strong></span>
+<div id="muro" class="comments-section">
+    <h2 style="font-style: italic; font-weight: 900; font-size: 2.2rem; margin: 0; color: #fff;">¿SOS LOCRERO O PECHO FRÍO?</h2>
+    <p style="font-size: 1.1rem; color: #ccc; line-height: 1.5;">
+        Acá el que no arriesga una predicción, labura de <strong>ESCLAVO</strong>. <br><br>
+        Si no firmás el muro antes de subir al avión, te toca ir a buscar los tragos a la barra para todos los demás durante los primeros 3 días. <br><br>
+        <strong>¿Quién se quiebra primero? ¿Quién se olvida el protector? ¡Firmá o serví, vago! 👇</strong>
+    </p>
+    <div class="comment-box">
+        <div id="disqus_thread"></div>
     </div>
-
-    <div class="hero-section">
-        <div class="container" onclick="manejarClick()">
-            <div style="font-size: 0.75rem; color: var(--blue); font-weight: 800; letter-spacing: 3px; margin-bottom: 5px;">LOCREROS DEL SUR</div>
-            <div class="puj">PUJ</div>
-            <div style="font-weight: 700; opacity: 0.8; margin-bottom: 10px;">Punta Cana • 24 de Abril</div>
-            <div class="grid">
-                <div class="box"><span class="num" id="d">00</span><span class="unit">Días</span></div>
-                <div class="box"><span class="num" id="h">00</span><span class="unit">Horas</span></div>
-                <div class="box"><span class="num" id="m">00</span><span class="unit">Minutos</span></div>
-                <div class="box"><span class="num" id="s">00</span><span class="unit">Segundos</span></div>
-            </div>
-            <div class="btn-manija">¡ESTOY RE MANIJA! 🌴</div>
-            <div class="click-counter">MI NIVEL DE MANIJA: <span id="contador-votos" style="color:var(--blue)">0</span></div>
-        </div>
-        <div style="margin-top: 40px; font-size: 0.7rem; color: #8E8E93; text-transform: uppercase; cursor: pointer; letter-spacing: 2px;" onclick="document.getElementById('muro').scrollIntoView()">Deslizá para el bardeo ↓</div>
-    </div>
-
-    <div id="muro" class="comments-section">
-        <h2 style="font-style: italic; font-weight: 900; font-size: 2rem; margin: 0; color: #fff;">¿Y VOS QUÉ VAS A HACER?</h2>
-        <p style="font-size: 0.9rem; color: #ccc;">El que no firme o no arriesgue predicción será el <strong>MOZO OFICIAL</strong>. <br>¡Firmá o serví! 👇</p>
-        <div class="comment-box">
-            <div id="disqus_thread"></div>
-        </div>
-    </div>
-
-    <script>
-        const target = new Date("April 24, 2026 00:00:00").getTime();
-        function updateTimer() {
-            const diff = target - new Date().getTime();
-            document.getElementById("d").innerText = Math.floor(diff / (1000*60*60*24));
-            document.getElementById("h").innerText = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
-            document.getElementById("m").innerText = Math.floor((diff % (1000*60*60)) / (1000*60));
-            document.getElementById("s").innerText = Math.floor((diff % (1000*60)) / 1000);
-        }
-        setInterval(updateTimer, 1000); updateTimer();
-
-        let votos = parseInt(localStorage.getItem('votosManija')) || 0;
-        document.getElementById('contador-votos').innerText = votos;
-
-        function manejarClick() {
-            votos++;
-            localStorage.setItem('votosManija', votos);
-            document.getElementById('contador-votos').innerText = votos;
-            confetti({ particleCount: 150, spread: 70, origin: { y: 0.7 } });
-        }
-
-        // CONFIGURACIÓN DE DISQUS REFORZADA
-        var disqus_config = function () {
-            // Esto limpia cualquier ?kj o parámetro raro para que Disqus no se pierda
-            this.page.url = "https://macoa27.github.io/viaje-puntacana/"; 
-            this.page.identifier = "puj-locreros-final-v4";
-            
-            // ESTO DESACTIVA LOS EMOJIS DE "ESTÁS DE ACUERDO"
-            this.page.reactions = { enabled: false };
-        };
-
-        (function() {
-            var d = document, s = d.createElement('script');
-            s.src = 'https://https-macoa27-github-io-viaje-puntacana.disqus.com/embed.js';
-            s.setAttribute('data-timestamp', +new Date());
-            (d.head || d.body).appendChild(s);
-        })();
-    </script>
-</body>
-</html>
-
+</div>
