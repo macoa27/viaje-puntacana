@@ -121,23 +121,30 @@
         document.getElementById('contador-votos').innerText = votos;
 
         function manejarClick() {
-            // Sonido
-            const sound = document.getElementById('clickSound');
-            sound.currentTime = 0;
-            sound.play();
+            // 1. VIBRACIÓN (Funciona en Android, en iPhone depende de configuración)
+            if (window.navigator && window.navigator.vibrate) {
+                window.navigator.vibrate(50); // Vibración corta de 50ms
+            }
 
-            // Lógica
+            // 2. SONIDO (Intento de reproducción)
+            const sound = document.getElementById('clickSound');
+            if (sound) {
+                sound.currentTime = 0;
+                sound.play().catch(e => console.log("Sonido bloqueado hasta interacción"));
+            }
+
+            // 3. LÓGICA DE CONTADOR
             votos++;
             localStorage.setItem('votosManija', votos);
             document.getElementById('contador-votos').innerText = votos;
             
-            // Confeti
+            // 4. CONFETI
             confetti({ particleCount: 150, spread: 70, origin: { y: 0.7 } });
         }
 
         var disqus_config = function () {
             this.page.url = "https://macoa27.github.io/viaje-puntacana/";
-            this.page.identifier = "puj-locreros-final-dark-vAudio";
+            this.page.identifier = "puj-locreros-final-dark-vHaptics";
             this.page.reactions = { enabled: false };
         };
         (function() {
