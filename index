@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Punta Cana 2026</title>
+    <style>
+        body, html { height: 100%; margin: 0; font-family: -apple-system, sans-serif; background: #000; color: #fff; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .bg { background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.7)), url('foto-grupo.jpg') center/cover; position: fixed; width: 100%; height: 100%; z-index: -1; }
+        .card { background: rgba(28,28,30,0.8); backdrop-filter: blur(20px); padding: 30px; border-radius: 24px; text-align: center; border: 1px solid rgba(255,255,255,0.1); width: 80%; max-width: 350px; }
+        .puj { font-size: 4rem; font-weight: 900; letter-spacing: -2px; margin: 0; }
+        .dest { color: #0A84FF; font-weight: 600; margin-bottom: 20px; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .box { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 15px; }
+        .num { font-size: 1.8rem; font-weight: 700; display: block; }
+        .lab { font-size: 0.6rem; color: #0A84FF; text-transform: uppercase; }
+    </style>
+</head>
+<body>
+    <div class="bg"></div>
+    <div class="card">
+        <div style="font-size: 0.7rem; color: #8E8E93; letter-spacing: 2px;">PRÓXIMO DESTINO</div>
+        <h1 class="puj">PUJ</h1>
+        <div class="dest">Punta Cana, RD</div>
+        <div class="grid">
+            <div class="box"><span class="num" id="d">00</span><span class="lab">Días</span></div>
+            <div class="box"><span class="num" id="h">00</span><span class="lab">Horas</span></div>
+            <div class="box"><span class="num" id="m">00</span><span class="lab">Minutos</span></div>
+            <div class="box"><span class="num" id="s">00</span><span class="lab">Segundos</span></div>
+        </div>
+    </div>
+    <script>
+        const end = new Date("April 24, 2026 00:00:00").getTime();
+        setInterval(() => {
+            const now = new Date().getTime();
+            const diff = end - now;
+            document.getElementById("d").innerText = Math.floor(diff / (1000*60*60*24));
+            document.getElementById("h").innerText = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+            document.getElementById("m").innerText = Math.floor((diff % (1000*60*60)) / (1000*60));
+            document.getElementById("s").innerText = Math.floor((diff % (1000*60)) / 1000);
+        }, 1000);
+    </script>
+</body>
+</html>
