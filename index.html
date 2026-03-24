@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-MYLMKQ2TSQ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-MYLMKQ2TSQ');
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Locreros del Sur | PUJ 2026</title>
@@ -121,30 +129,28 @@
         document.getElementById('contador-votos').innerText = votos;
 
         function manejarClick() {
-            // 1. VIBRACIÓN (Funciona en Android, en iPhone depende de configuración)
-            if (window.navigator && window.navigator.vibrate) {
-                window.navigator.vibrate(50); // Vibración corta de 50ms
-            }
-
-            // 2. SONIDO (Intento de reproducción)
+            // Haptics
+            if (window.navigator && window.navigator.vibrate) { window.navigator.vibrate(50); }
+            
+            // Sonido
             const sound = document.getElementById('clickSound');
-            if (sound) {
-                sound.currentTime = 0;
-                sound.play().catch(e => console.log("Sonido bloqueado hasta interacción"));
-            }
+            if (sound) { sound.currentTime = 0; sound.play().catch(e => {}); }
 
-            // 3. LÓGICA DE CONTADOR
+            // Métrica de Google
+            gtag('event', 'click_manija', { 'event_category': 'Interacción', 'event_label': 'Botón Manija' });
+
+            // Contador
             votos++;
             localStorage.setItem('votosManija', votos);
             document.getElementById('contador-votos').innerText = votos;
             
-            // 4. CONFETI
+            // Confeti
             confetti({ particleCount: 150, spread: 70, origin: { y: 0.7 } });
         }
 
         var disqus_config = function () {
             this.page.url = "https://macoa27.github.io/viaje-puntacana/";
-            this.page.identifier = "puj-locreros-final-dark-vHaptics";
+            this.page.identifier = "puj-locreros-v-final-analytics";
             this.page.reactions = { enabled: false };
         };
         (function() {
