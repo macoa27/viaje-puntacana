@@ -21,11 +21,15 @@
             background-color: var(--bg); color: #fff; min-height: 100vh; width: 100%;
             overflow-x: hidden; scroll-behavior: smooth;
         }
+
+        /* --- FOTO DE FONDO RESTAURADA --- */
         .bg-fixed { 
             background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.85)), url('foto-grupo.jpg'); 
-            background-position: center; background-size: cover; position: fixed; 
-            top: 0; left: 0; width: 100%; height: 100%; z-index: -1; 
+            background-position: center; background-size: cover; 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            z-index: -1; 
         }
+        
         .weather-bar { 
             position: fixed; top: 15px; left: 50%; transform: translateX(-50%);
             font-size: 0.7rem; background: rgba(0,0,0,0.85); padding: 10px 18px; 
@@ -101,7 +105,7 @@
 
     <div id="muro" class="comments-section">
         <div class="muro-card">
-            <h2>¿SOS LOCRERO O PECHO FRÍO?</h2>
+            <h2>¿SOS LOCRERO O CAGÓN</h2>
             <p>Acá el que no arriesga una predicción, labura de <strong>ESCLAVO</strong>.</p>
             <p style="font-size: 0.9rem;">Si no firmás el muro antes de viajar, te toca ir a buscar los tragos a la barra para todos durante las primeras <strong>24 HORAS</strong>. <br><strong>¡Firmá o serví, vago! 👇</strong></p>
         </div>
@@ -116,60 +120,4 @@
             const diff = target - new Date().getTime();
             if (diff <= 0) return;
             document.getElementById("d").innerText = Math.floor(diff / (1000*60*60*24));
-            document.getElementById("h").innerText = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
-            document.getElementById("m").innerText = Math.floor((diff % (1000*60*60)) / (1000*60));
-            document.getElementById("s").innerText = Math.floor((diff % (1000*60)) / 1000);
-        }
-        setInterval(updateTimer, 1000); updateTimer();
-
-        let votos = parseInt(localStorage.getItem('votosManija')) || 0;
-        document.getElementById('contador-votos').innerText = votos;
-
-        function manejarClick() {
-            // 1. VIBRACIÓN (Android)
-            if (navigator.vibrate) { navigator.vibrate(50); }
-
-            // 2. AUDIO SINTÉTICO (Para que no falle el MP3 externo)
-            try {
-                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                const oscillator = audioCtx.createOscillator();
-                const gainNode = audioCtx.createGain();
-                oscillator.type = 'sine';
-                oscillator.frequency.setValueAtTime(600, audioCtx.currentTime);
-                oscillator.frequency.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
-                gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
-                gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
-                oscillator.connect(gainNode);
-                gainNode.connect(audioCtx.destination);
-                oscillator.start();
-                oscillator.stop(audioCtx.currentTime + 0.1);
-            } catch (e) {}
-
-            // 3. GOOGLE ANALYTICS
-            if (typeof gtag === 'function') {
-                gtag('event', 'click_manija', { 'event_category': 'Interacción', 'event_label': 'Botón Manija' });
-            }
-
-            // 4. LÓGICA
-            votos++;
-            localStorage.setItem('votosManija', votos);
-            document.getElementById('contador-votos').innerText = votos;
-            
-            // 5. CONFETI
-            confetti({ particleCount: 150, spread: 70, origin: { y: 0.7 } });
-        }
-
-        var disqus_config = function () {
-            this.page.url = "https://macoa27.github.io/viaje-puntacana/";
-            this.page.identifier = "puj-locreros-v-final-full-logic";
-            this.page.reactions = { enabled: false };
-        };
-        (function() {
-            var d = document, s = d.createElement('script');
-            s.src = 'https://https-macoa27-github-io-viaje-puntacana.disqus.com/embed.js';
-            s.setAttribute('data-timestamp', +new Date());
-            (d.head || d.body).appendChild(s);
-        })();
-    </script>
-</body>
-</html>
+            document.getElementById("h
