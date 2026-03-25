@@ -23,11 +23,19 @@
             overflow-x: hidden; scroll-behavior: smooth;
         }
 
-        /* FONDO FORZADO */
-        .bg-fixed { 
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.9)), url('foto-grupo.jpg'); 
-            background-position: center; background-size: cover; background-repeat: no-repeat;
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; 
+        /* CAPA DE FONDO INDEPENDIENTE */
+        #background-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* Asegurate que el archivo se llame exactamente foto-grupo.jpg en GitHub */
+            background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.9)), url('foto-grupo.jpg');
+            background-position: center center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            z-index: -1;
         }
         
         .weather-bar { 
@@ -55,6 +63,7 @@
             margin-top: 20px; background: var(--blue); color: #fff; padding: 16px; 
             border-radius: 18px; font-size: 1rem; font-weight: 900; 
             text-transform: uppercase; width: 100%; border: none; cursor: pointer;
+            box-shadow: 0 0 15px rgba(10, 132, 255, 0.4);
         }
 
         .puj { font-size: 5.5rem; font-weight: 900; letter-spacing: -4px; margin: 0; line-height: 0.9; }
@@ -75,7 +84,7 @@
     </style>
 </head>
 <body>
-    <div class="bg-fixed"></div>
+    <div id="background-layer"></div>
 
     <div class="weather-bar">
         <span>☀️ PUJ: <strong>30°C</strong></span>
@@ -115,7 +124,7 @@
     </div>
 
     <script>
-        // COUNTDOWN CORREGIDO
+        // COUNTDOWN
         const targetDate = new Date("April 24, 2026 00:00:00").getTime();
         
         function updateTimer() {
@@ -123,10 +132,10 @@
             const diff = targetDate - now;
             
             if (diff > 0) {
-                document.getElementById("days").innerHTML = Math.floor(diff / (1000 * 60 * 60 * 24));
-                document.getElementById("hours").innerHTML = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                document.getElementById("minutes").innerHTML = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                document.getElementById("seconds").innerHTML = Math.floor((diff % (1000 * 60)) / 1000);
+                document.getElementById("days").innerText = Math.floor(diff / (1000 * 60 * 60 * 24));
+                document.getElementById("hours").innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                document.getElementById("minutes").innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                document.getElementById("seconds").innerText = Math.floor((diff % (1000 * 60)) / 1000);
             }
         }
         setInterval(updateTimer, 1000);
@@ -168,7 +177,7 @@
         // DISQUS
         var disqus_config = function () {
             this.page.url = "https://macoa27.github.io/viaje-puntacana/";
-            this.page.identifier = "puj-locreros-final-v24h-v2";
+            this.page.identifier = "puj-locreros-final-dark-vHaptics-v3";
         };
         (function() {
             var d = document, s = d.createElement('script');
